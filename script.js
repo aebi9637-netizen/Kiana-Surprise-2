@@ -396,6 +396,19 @@ scene.add(heartLight);
 
 
 /* =====================================================
+   INTERACTION TEXT
+===================================================== */
+
+const interactionText =
+    document.getElementById(
+        "interactionText"
+    );
+
+
+const giftInteractionDistance = 3.2;
+
+
+/* =====================================================
    CAMERA LOOK
 ===================================================== */
 
@@ -505,10 +518,15 @@ window.addEventListener(
 ===================================================== */
 
 const joystickArea =
-    document.getElementById("joystickArea");
+    document.getElementById(
+        "joystickArea"
+    );
+
 
 const joystickKnob =
-    document.getElementById("joystickKnob");
+    document.getElementById(
+        "joystickKnob"
+    );
 
 
 let joystickActive = false;
@@ -675,11 +693,6 @@ function resetJoystick() {
 
 const moveSpeed = 0.035;
 
-
-/* =====================================================
-   COLLISION SETTINGS
-===================================================== */
-
 const playerRadius = 0.35;
 
 
@@ -688,10 +701,6 @@ const playerRadius = 0.35;
 ===================================================== */
 
 function updateMovement() {
-
-    /* ---------------------------------------------
-       JOYSTICK
-    --------------------------------------------- */
 
     const forward =
         joystickY *
@@ -703,20 +712,13 @@ function updateMovement() {
         moveSpeed;
 
 
-    /* ---------------------------------------------
-       CURRENT POSITION
-    --------------------------------------------- */
-
     let nextX =
         camera.position.x;
+
 
     let nextZ =
         camera.position.z;
 
-
-    /* ---------------------------------------------
-       FORWARD / BACKWARD
-    --------------------------------------------- */
 
     nextX +=
         Math.sin(
@@ -731,10 +733,6 @@ function updateMovement() {
         ) *
         forward;
 
-
-    /* ---------------------------------------------
-       LEFT / RIGHT
-    --------------------------------------------- */
 
     nextX +=
         Math.cos(
@@ -751,7 +749,7 @@ function updateMovement() {
 
 
     /* =================================================
-       ROOM WALL COLLISION
+       WALL COLLISION
     ================================================= */
 
     nextX =
@@ -777,11 +775,14 @@ function updateMovement() {
     const tableMinX =
         -2.25 - playerRadius;
 
+
     const tableMaxX =
         2.25 + playerRadius;
 
+
     const tableMinZ =
         -2.10 - playerRadius;
+
 
     const tableMaxZ =
         0.10 + playerRadius;
@@ -796,10 +797,6 @@ function updateMovement() {
         nextZ > tableMinZ &&
         nextZ < tableMaxZ;
 
-
-    /* ---------------------------------------------
-       BLOCK ENTERING TABLE
-    --------------------------------------------- */
 
     if (
         insideTableX &&
@@ -874,12 +871,9 @@ function updateMovement() {
     }
 
 
-    /* =================================================
-       APPLY POSITION
-    ================================================= */
-
     camera.position.x =
         nextX;
+
 
     camera.position.z =
         nextZ;
@@ -908,14 +902,16 @@ function updateCamera() {
 
 
 /* =====================================================
-   GIFT INTERACTION
+   GIFT
 ===================================================== */
 
 const raycaster =
     new THREE.Raycaster();
 
+
 const mouse =
     new THREE.Vector2();
+
 
 let giftOpened = false;
 
@@ -924,12 +920,71 @@ const heartTargetY = 4.8;
 let cinematicStarted = false;
 
 
+/* =====================================================
+   GIFT DISTANCE CHECK
+===================================================== */
+
+function updateInteraction() {
+
+    if (
+        giftOpened
+    ) {
+
+        interactionText.style.opacity =
+            "0";
+
+        return;
+    }
+
+
+    const distance =
+        camera.position.distanceTo(
+            gift.position
+        );
+
+
+    if (
+        distance <=
+        giftInteractionDistance
+    ) {
+
+        interactionText.style.opacity =
+            "1";
+
+    }
+    else {
+
+        interactionText.style.opacity =
+            "0";
+    }
+}
+
+
+/* =====================================================
+   GIFT INTERACTION
+===================================================== */
+
 function interactWithGift(
     clientX,
     clientY
 ) {
 
     if (giftOpened) {
+        return;
+    }
+
+
+    const distance =
+        camera.position.distanceTo(
+            gift.position
+        );
+
+
+    if (
+        distance >
+        giftInteractionDistance
+    ) {
+
         return;
     }
 
@@ -959,7 +1014,10 @@ function interactWithGift(
         ]);
 
 
-    if (hits.length === 0) {
+    if (
+        hits.length === 0
+    ) {
+
         return;
     }
 
@@ -967,12 +1025,17 @@ function interactWithGift(
     giftOpened = true;
 
 
+    interactionText.style.opacity =
+        "0";
+
+
     /* =================================================
-       OPEN LID
+       OPEN GIFT
     ================================================= */
 
     giftLid.position.y +=
         1.2;
+
 
     giftLid.rotation.x =
         -0.35;
@@ -981,15 +1044,17 @@ function interactWithGift(
     ribbonTop.position.y +=
         1.2;
 
+
     ribbonTop.rotation.x =
         -0.35;
 
 
     /* =================================================
-       SHOW HEART
+       HEART
     ================================================= */
 
     heart.visible = true;
+
 
     heart.position.set(
         0,
@@ -999,7 +1064,7 @@ function interactWithGift(
 
 
     /* =================================================
-       GIFT LIGHT
+       LIGHT
     ================================================= */
 
     const giftLight =
@@ -1009,13 +1074,17 @@ function interactWithGift(
             5
         );
 
+
     giftLight.position.set(
         0,
         3,
         -1
     );
 
-    scene.add(giftLight);
+
+    scene.add(
+        giftLight
+    );
 
 
     let lightIntensity = 0;
@@ -1043,6 +1112,7 @@ function interactWithGift(
 
                     giftLight.intensity =
                         8;
+
 
                     heartLight.intensity =
                         4;
@@ -1080,6 +1150,7 @@ window.addEventListener(
 ===================================================== */
 
 let tapStartX = 0;
+
 let tapStartY = 0;
 
 
@@ -1087,13 +1158,17 @@ window.addEventListener(
     "touchstart",
     function (event) {
 
-        if (event.touches.length !== 1) {
+        if (
+            event.touches.length !== 1
+        ) {
+
             return;
         }
 
 
         tapStartX =
             event.touches[0].clientX;
+
 
         tapStartY =
             event.touches[0].clientY;
@@ -1111,12 +1186,14 @@ window.addEventListener(
         if (
             event.changedTouches.length !== 1
         ) {
+
             return;
         }
 
 
         const endX =
             event.changedTouches[0].clientX;
+
 
         const endY =
             event.changedTouches[0].clientY;
@@ -1198,7 +1275,9 @@ setTimeout(
             );
 
 
-        if (loading) {
+        if (
+            loading
+        ) {
 
             loading.style.opacity =
                 "0";
@@ -1235,7 +1314,9 @@ function animate() {
        GIFT ROTATION
     ================================================= */
 
-    if (!giftOpened) {
+    if (
+        !giftOpened
+    ) {
 
         gift.rotation.y +=
             0.002;
@@ -1243,10 +1324,19 @@ function animate() {
 
 
     /* =================================================
+       INTERACTION
+    ================================================= */
+
+    updateInteraction();
+
+
+    /* =================================================
        HEART
     ================================================= */
 
-    if (heart.visible) {
+    if (
+        heart.visible
+    ) {
 
         heart.position.y +=
             (
@@ -1285,7 +1375,9 @@ function animate() {
                 );
 
 
-            if (cinematicText) {
+            if (
+                cinematicText
+            ) {
 
                 cinematicText.style.opacity =
                     "1";
@@ -1295,7 +1387,9 @@ function animate() {
             setTimeout(
                 function () {
 
-                    if (cinematicLine2) {
+                    if (
+                        cinematicLine2
+                    ) {
 
                         cinematicLine2.style.opacity =
                             "1";
