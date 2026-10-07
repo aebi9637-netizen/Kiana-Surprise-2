@@ -8,31 +8,41 @@ import * as THREE from
 
 const scene = new THREE.Scene();
 
-scene.background = new THREE.Color(0x020204);
+scene.background =
+    new THREE.Color(0x020204);
 
 
 /* =====================================================
    CAMERA
 ===================================================== */
 
-const camera = new THREE.PerspectiveCamera(
-    60,
-    window.innerWidth / window.innerHeight,
-    0.1,
-    100
-);
+const camera =
+    new THREE.PerspectiveCamera(
+        60,
+        window.innerWidth /
+        window.innerHeight,
+        0.1,
+        100
+    );
 
-camera.position.set(0, 1.7, 7);
+camera.position.set(
+    0,
+    1.7,
+    7
+);
 
 
 /* =====================================================
    RENDERER
 ===================================================== */
 
-const renderer = new THREE.WebGLRenderer({
-    canvas: document.getElementById("scene"),
-    antialias: true
-});
+const renderer =
+    new THREE.WebGLRenderer({
+        canvas:
+            document.getElementById("scene"),
+
+        antialias: true
+    });
 
 renderer.setSize(
     window.innerWidth,
@@ -40,7 +50,10 @@ renderer.setSize(
 );
 
 renderer.setPixelRatio(
-    Math.min(window.devicePixelRatio, 2)
+    Math.min(
+        window.devicePixelRatio,
+        2
+    )
 );
 
 renderer.shadowMap.enabled = true;
@@ -50,125 +63,206 @@ renderer.shadowMap.enabled = true;
    LIGHT
 ===================================================== */
 
-const ambientLight = new THREE.AmbientLight(
-    0x3a3035,
-    0.35
+const ambientLight =
+    new THREE.AmbientLight(
+        0x3a3035,
+        0.35
+    );
+
+scene.add(
+    ambientLight
 );
 
-scene.add(ambientLight);
 
+const pointLight =
+    new THREE.PointLight(
+        0xff6688,
+        12,
+        12
+    );
 
-const pointLight = new THREE.PointLight(
-    0xff6688,
-    12,
-    12
+pointLight.position.set(
+    0,
+    3,
+    1
 );
 
-pointLight.position.set(0, 3, 1);
 pointLight.castShadow = true;
 
-scene.add(pointLight);
+scene.add(
+    pointLight
+);
 
 
 /* =====================================================
    FLOOR
 ===================================================== */
 
-const floor = new THREE.Mesh(
-    new THREE.PlaneGeometry(14, 14),
+const floor =
+    new THREE.Mesh(
 
-    new THREE.MeshStandardMaterial({
-        color: 0x151116,
-        roughness: 0.8
-    })
-);
+        new THREE.PlaneGeometry(
+            14,
+            14
+        ),
 
-floor.rotation.x = -Math.PI / 2;
+        new THREE.MeshStandardMaterial({
+            color: 0x151116,
+            roughness: 0.8
+        })
+    );
+
+floor.rotation.x =
+    -Math.PI / 2;
+
 floor.receiveShadow = true;
 
-scene.add(floor);
+scene.add(
+    floor
+);
 
 
 /* =====================================================
    WALLS
 ===================================================== */
 
-const wallMaterial = new THREE.MeshStandardMaterial({
-    color: 0x100c10,
-    roughness: 0.9
-});
+const wallMaterial =
+    new THREE.MeshStandardMaterial({
+        color: 0x100c10,
+        roughness: 0.9
+    });
 
 
-const backWall = new THREE.Mesh(
-    new THREE.BoxGeometry(14, 6, 0.3),
-    wallMaterial
+const backWall =
+    new THREE.Mesh(
+
+        new THREE.BoxGeometry(
+            14,
+            6,
+            0.3
+        ),
+
+        wallMaterial
+    );
+
+backWall.position.set(
+    0,
+    3,
+    -5
 );
 
-backWall.position.set(0, 3, -5);
-
-scene.add(backWall);
-
-
-const leftWall = new THREE.Mesh(
-    new THREE.BoxGeometry(0.3, 6, 10),
-    wallMaterial
+scene.add(
+    backWall
 );
 
-leftWall.position.set(-7, 3, 0);
 
-scene.add(leftWall);
+const leftWall =
+    new THREE.Mesh(
 
+        new THREE.BoxGeometry(
+            0.3,
+            6,
+            10
+        ),
 
-const rightWall = new THREE.Mesh(
-    new THREE.BoxGeometry(0.3, 6, 10),
-    wallMaterial
+        wallMaterial
+    );
+
+leftWall.position.set(
+    -7,
+    3,
+    0
 );
 
-rightWall.position.set(7, 3, 0);
+scene.add(
+    leftWall
+);
 
-scene.add(rightWall);
+
+const rightWall =
+    new THREE.Mesh(
+
+        new THREE.BoxGeometry(
+            0.3,
+            6,
+            10
+        ),
+
+        wallMaterial
+    );
+
+rightWall.position.set(
+    7,
+    3,
+    0
+);
+
+scene.add(
+    rightWall
+);
 
 
 /* =====================================================
    TABLE
 ===================================================== */
 
-const tableMaterial = new THREE.MeshStandardMaterial({
-    color: 0x24181c,
-    roughness: 0.65
-});
+const tableMaterial =
+    new THREE.MeshStandardMaterial({
+        color: 0x24181c,
+        roughness: 0.65
+    });
 
 
-const tableTop = new THREE.Mesh(
-    new THREE.BoxGeometry(4.5, 0.35, 2.2),
-    tableMaterial
+const tableTop =
+    new THREE.Mesh(
+
+        new THREE.BoxGeometry(
+            4.5,
+            0.35,
+            2.2
+        ),
+
+        tableMaterial
+    );
+
+tableTop.position.set(
+    0,
+    1.8,
+    -1
 );
 
-tableTop.position.set(0, 1.8, -1);
-
 tableTop.castShadow = true;
+
 tableTop.receiveShadow = true;
 
-scene.add(tableTop);
+scene.add(
+    tableTop
+);
 
 
 /* =====================================================
    TABLE LEGS
 ===================================================== */
 
-for (const x of [-1.9, 1.9]) {
+for (
+    const x of [-1.9, 1.9]
+) {
 
-    for (const z of [-1.8, -0.2]) {
+    for (
+        const z of [-1.8, -0.2]
+    ) {
 
-        const leg = new THREE.Mesh(
-            new THREE.BoxGeometry(
-                0.25,
-                1.8,
-                0.25
-            ),
+        const leg =
+            new THREE.Mesh(
 
-            tableMaterial
-        );
+                new THREE.BoxGeometry(
+                    0.25,
+                    1.8,
+                    0.25
+                ),
+
+                tableMaterial
+            );
 
         leg.position.set(
             x,
@@ -178,7 +272,9 @@ for (const x of [-1.9, 1.9]) {
 
         leg.castShadow = true;
 
-        scene.add(leg);
+        scene.add(
+            leg
+        );
     }
 }
 
@@ -187,22 +283,25 @@ for (const x of [-1.9, 1.9]) {
    GIFT
 ===================================================== */
 
-const giftMaterial = new THREE.MeshStandardMaterial({
-    color: 0x8b183c,
-    roughness: 0.45,
-    metalness: 0.05
-});
+const giftMaterial =
+    new THREE.MeshStandardMaterial({
+        color: 0x8b183c,
+        roughness: 0.45,
+        metalness: 0.05
+    });
 
 
-const gift = new THREE.Mesh(
-    new THREE.BoxGeometry(
-        1.35,
-        0.8,
-        1.35
-    ),
+const gift =
+    new THREE.Mesh(
 
-    giftMaterial
-);
+        new THREE.BoxGeometry(
+            1.35,
+            0.8,
+            1.35
+        ),
+
+        giftMaterial
+    );
 
 gift.position.set(
     0,
@@ -212,22 +311,26 @@ gift.position.set(
 
 gift.castShadow = true;
 
-scene.add(gift);
+scene.add(
+    gift
+);
 
 
 /* =====================================================
    GIFT LID
 ===================================================== */
 
-const giftLid = new THREE.Mesh(
-    new THREE.BoxGeometry(
-        1.48,
-        0.25,
-        1.48
-    ),
+const giftLid =
+    new THREE.Mesh(
 
-    giftMaterial
-);
+        new THREE.BoxGeometry(
+            1.48,
+            0.25,
+            1.48
+        ),
+
+        giftMaterial
+    );
 
 giftLid.position.set(
     0,
@@ -237,28 +340,33 @@ giftLid.position.set(
 
 giftLid.castShadow = true;
 
-scene.add(giftLid);
+scene.add(
+    giftLid
+);
 
 
 /* =====================================================
    RIBBON
 ===================================================== */
 
-const ribbonMaterial = new THREE.MeshStandardMaterial({
-    color: 0xffd1dc,
-    roughness: 0.35
-});
+const ribbonMaterial =
+    new THREE.MeshStandardMaterial({
+        color: 0xffd1dc,
+        roughness: 0.35
+    });
 
 
-const ribbonVertical = new THREE.Mesh(
-    new THREE.BoxGeometry(
-        0.16,
-        0.85,
-        1.4
-    ),
+const ribbonVertical =
+    new THREE.Mesh(
 
-    ribbonMaterial
-);
+        new THREE.BoxGeometry(
+            0.16,
+            0.85,
+            1.4
+        ),
+
+        ribbonMaterial
+    );
 
 ribbonVertical.position.set(
     0,
@@ -266,18 +374,22 @@ ribbonVertical.position.set(
     -1
 );
 
-scene.add(ribbonVertical);
-
-
-const ribbonTop = new THREE.Mesh(
-    new THREE.BoxGeometry(
-        0.16,
-        0.28,
-        1.5
-    ),
-
-    ribbonMaterial
+scene.add(
+    ribbonVertical
 );
+
+
+const ribbonTop =
+    new THREE.Mesh(
+
+        new THREE.BoxGeometry(
+            0.16,
+            0.28,
+            1.5
+        ),
+
+        ribbonMaterial
+    );
 
 ribbonTop.position.set(
     0,
@@ -285,16 +397,22 @@ ribbonTop.position.set(
     -1
 );
 
-scene.add(ribbonTop);
+scene.add(
+    ribbonTop
+);
 
 
 /* =====================================================
    HEART
 ===================================================== */
 
-const heartShape = new THREE.Shape();
+const heartShape =
+    new THREE.Shape();
 
-heartShape.moveTo(0, 0.35);
+heartShape.moveTo(
+    0,
+    0.35
+);
 
 heartShape.bezierCurveTo(
     -0.5,
@@ -333,31 +451,43 @@ heartShape.bezierCurveTo(
 );
 
 
-const heartGeometry = new THREE.ExtrudeGeometry(
-    heartShape,
-    {
-        depth: 0.35,
-        bevelEnabled: true,
-        bevelSegments: 4,
-        bevelSize: 0.08,
-        bevelThickness: 0.08
-    }
-);
+const heartGeometry =
+    new THREE.ExtrudeGeometry(
+        heartShape,
+        {
+            depth: 0.35,
+
+            bevelEnabled: true,
+
+            bevelSegments: 4,
+
+            bevelSize: 0.08,
+
+            bevelThickness: 0.08
+        }
+    );
 
 
-const heartMaterial = new THREE.MeshStandardMaterial({
-    color: 0xff174f,
-    emissive: 0x660018,
-    emissiveIntensity: 1.5,
-    roughness: 0.25,
-    metalness: 0.1
-});
+const heartMaterial =
+    new THREE.MeshStandardMaterial({
+
+        color: 0xff174f,
+
+        emissive: 0x660018,
+
+        emissiveIntensity: 1.5,
+
+        roughness: 0.25,
+
+        metalness: 0.1
+    });
 
 
-const heart = new THREE.Mesh(
-    heartGeometry,
-    heartMaterial
-);
+const heart =
+    new THREE.Mesh(
+        heartGeometry,
+        heartMaterial
+    );
 
 heart.scale.set(
     0.45,
@@ -373,18 +503,21 @@ heart.position.set(
 
 heart.visible = false;
 
-scene.add(heart);
+scene.add(
+    heart
+);
 
 
 /* =====================================================
    HEART LIGHT
 ===================================================== */
 
-const heartLight = new THREE.PointLight(
-    0xff174f,
-    0,
-    5
-);
+const heartLight =
+    new THREE.PointLight(
+        0xff174f,
+        0,
+        5
+    );
 
 heartLight.position.set(
     0,
@@ -392,7 +525,9 @@ heartLight.position.set(
     -1
 );
 
-scene.add(heartLight);
+scene.add(
+    heartLight
+);
 
 
 /* =====================================================
@@ -405,7 +540,13 @@ const interactionText =
     );
 
 
-const giftInteractionDistance = 3.2;
+/*
+   فاصله‌ای که بازیکن می‌تواند
+   پیام تعامل را ببیند
+*/
+
+const giftInteractionDistance =
+    4.5;
 
 
 /* =====================================================
@@ -413,11 +554,13 @@ const giftInteractionDistance = 3.2;
 ===================================================== */
 
 let targetRotationX = 0;
+
 let targetRotationY = 0;
 
 let lookActive = false;
 
 let lastLookX = 0;
+
 let lastLookY = 0;
 
 
@@ -427,13 +570,19 @@ let lastLookY = 0;
 
 window.addEventListener(
     "touchstart",
+
     function (event) {
 
-        if (event.touches.length !== 1) {
+        if (
+            event.touches.length !== 1
+        ) {
             return;
         }
 
-        const touch = event.touches[0];
+
+        const touch =
+            event.touches[0];
+
 
         if (
             touch.clientX >
@@ -442,10 +591,14 @@ window.addEventListener(
 
             lookActive = true;
 
-            lastLookX = touch.clientX;
-            lastLookY = touch.clientY;
+            lastLookX =
+                touch.clientX;
+
+            lastLookY =
+                touch.clientY;
         }
     },
+
     {
         passive: true
     }
@@ -454,6 +607,7 @@ window.addEventListener(
 
 window.addEventListener(
     "touchmove",
+
     function (event) {
 
         if (
@@ -463,17 +617,24 @@ window.addEventListener(
             return;
         }
 
-        const touch = event.touches[0];
+
+        const touch =
+            event.touches[0];
+
 
         const deltaX =
-            touch.clientX - lastLookX;
+            touch.clientX -
+            lastLookX;
+
 
         const deltaY =
-            touch.clientY - lastLookY;
+            touch.clientY -
+            lastLookY;
 
 
         targetRotationY -=
             deltaX * 0.003;
+
 
         targetRotationX +=
             deltaY * 0.002;
@@ -495,9 +656,14 @@ window.addEventListener(
             );
 
 
-        lastLookX = touch.clientX;
-        lastLookY = touch.clientY;
+        lastLookX =
+            touch.clientX;
+
+
+        lastLookY =
+            touch.clientY;
     },
+
     {
         passive: true
     }
@@ -506,6 +672,7 @@ window.addEventListener(
 
 window.addEventListener(
     "touchend",
+
     function () {
 
         lookActive = false;
@@ -532,6 +699,7 @@ const joystickKnob =
 let joystickActive = false;
 
 let joystickX = 0;
+
 let joystickY = 0;
 
 const joystickRadius = 31;
@@ -543,20 +711,27 @@ const joystickRadius = 31;
 
 joystickArea.addEventListener(
     "touchstart",
+
     function (event) {
 
         event.stopPropagation();
 
-        if (event.touches.length !== 1) {
+
+        if (
+            event.touches.length !== 1
+        ) {
             return;
         }
 
+
         joystickActive = true;
+
 
         updateJoystick(
             event.touches[0]
         );
     },
+
     {
         passive: false
     }
@@ -569,11 +744,13 @@ joystickArea.addEventListener(
 
 joystickArea.addEventListener(
     "touchmove",
+
     function (event) {
 
         event.preventDefault();
 
         event.stopPropagation();
+
 
         if (
             !joystickActive ||
@@ -582,10 +759,12 @@ joystickArea.addEventListener(
             return;
         }
 
+
         updateJoystick(
             event.touches[0]
         );
     },
+
     {
         passive: false
     }
@@ -598,6 +777,7 @@ joystickArea.addEventListener(
 
 joystickArea.addEventListener(
     "touchend",
+
     function () {
 
         resetJoystick();
@@ -605,10 +785,17 @@ joystickArea.addEventListener(
 );
 
 
-function updateJoystick(touch) {
+/* =====================================================
+   UPDATE JOYSTICK
+===================================================== */
+
+function updateJoystick(
+    touch
+) {
 
     const rect =
-        joystickArea.getBoundingClientRect();
+        joystickArea
+            .getBoundingClientRect();
 
 
     const centerX =
@@ -675,12 +862,18 @@ function updateJoystick(touch) {
 }
 
 
+/* =====================================================
+   RESET JOYSTICK
+===================================================== */
+
 function resetJoystick() {
 
     joystickActive = false;
 
     joystickX = 0;
+
     joystickY = 0;
+
 
     joystickKnob.style.transform =
         "translate(0px, 0px)";
@@ -691,9 +884,12 @@ function resetJoystick() {
    MOVEMENT
 ===================================================== */
 
-const moveSpeed = 0.035;
+const moveSpeed =
+    0.035;
 
-const playerRadius = 0.35;
+
+const playerRadius =
+    0.35;
 
 
 /* =====================================================
@@ -720,6 +916,10 @@ function updateMovement() {
         camera.position.z;
 
 
+    /* ---------------------------------------------
+       FORWARD / BACKWARD
+    --------------------------------------------- */
+
     nextX +=
         Math.sin(
             camera.rotation.y
@@ -733,6 +933,10 @@ function updateMovement() {
         ) *
         forward;
 
+
+    /* ---------------------------------------------
+       LEFT / RIGHT
+    --------------------------------------------- */
 
     nextX +=
         Math.cos(
@@ -749,7 +953,7 @@ function updateMovement() {
 
 
     /* =================================================
-       WALL COLLISION
+       ROOM WALLS
     ================================================= */
 
     nextX =
@@ -805,25 +1009,29 @@ function updateMovement() {
 
         const distanceLeft =
             Math.abs(
-                nextX - tableMinX
+                nextX -
+                tableMinX
             );
 
 
         const distanceRight =
             Math.abs(
-                nextX - tableMaxX
+                nextX -
+                tableMaxX
             );
 
 
         const distanceFront =
             Math.abs(
-                nextZ - tableMaxZ
+                nextZ -
+                tableMaxZ
             );
 
 
         const distanceBack =
             Math.abs(
-                nextZ - tableMinZ
+                nextZ -
+                tableMinZ
             );
 
 
@@ -843,8 +1051,8 @@ function updateMovement() {
 
             nextX =
                 tableMinX;
-
         }
+
         else if (
             smallest ===
             distanceRight
@@ -852,8 +1060,8 @@ function updateMovement() {
 
             nextX =
                 tableMaxX;
-
         }
+
         else if (
             smallest ===
             distanceFront
@@ -861,8 +1069,8 @@ function updateMovement() {
 
             nextZ =
                 tableMaxZ;
-
         }
+
         else {
 
             nextZ =
@@ -870,6 +1078,10 @@ function updateMovement() {
         }
     }
 
+
+    /* =================================================
+       APPLY
+    ================================================= */
 
     camera.position.x =
         nextX;
@@ -902,7 +1114,7 @@ function updateCamera() {
 
 
 /* =====================================================
-   GIFT
+   GIFT INTERACTION
 ===================================================== */
 
 const raycaster =
@@ -915,13 +1127,32 @@ const mouse =
 
 let giftOpened = false;
 
-const heartTargetY = 4.8;
 
-let cinematicStarted = false;
+/* =====================================================
+   DISTANCE TO GIFT
+===================================================== */
+
+function getGiftDistance() {
+
+    const dx =
+        camera.position.x -
+        gift.position.x;
+
+
+    const dz =
+        camera.position.z -
+        gift.position.z;
+
+
+    return Math.sqrt(
+        dx * dx +
+        dz * dz
+    );
+}
 
 
 /* =====================================================
-   GIFT DISTANCE CHECK
+   INTERACTION CHECK
 ===================================================== */
 
 function updateInteraction() {
@@ -938,9 +1169,7 @@ function updateInteraction() {
 
 
     const distance =
-        camera.position.distanceTo(
-            gift.position
-        );
+        getGiftDistance();
 
 
     if (
@@ -950,8 +1179,8 @@ function updateInteraction() {
 
         interactionText.style.opacity =
             "1";
-
     }
+
     else {
 
         interactionText.style.opacity =
@@ -961,63 +1190,22 @@ function updateInteraction() {
 
 
 /* =====================================================
-   GIFT INTERACTION
+   OPEN GIFT
 ===================================================== */
 
-function interactWithGift(
-    clientX,
-    clientY
-) {
+function openGift() {
 
-    if (giftOpened) {
+    if (
+        giftOpened
+    ) {
         return;
     }
 
 
-    const distance =
-        camera.position.distanceTo(
-            gift.position
-        );
-
-
     if (
-        distance >
+        getGiftDistance() >
         giftInteractionDistance
     ) {
-
-        return;
-    }
-
-
-    mouse.x =
-        (clientX /
-            window.innerWidth) *
-            2 - 1;
-
-
-    mouse.y =
-        -(clientY /
-            window.innerHeight) *
-            2 + 1;
-
-
-    raycaster.setFromCamera(
-        mouse,
-        camera
-    );
-
-
-    const hits =
-        raycaster.intersectObjects([
-            gift,
-            giftLid
-        ]);
-
-
-    if (
-        hits.length === 0
-    ) {
-
         return;
     }
 
@@ -1029,9 +1217,9 @@ function interactWithGift(
         "0";
 
 
-    /* =================================================
-       OPEN GIFT
-    ================================================= */
+    /* ---------------------------------------------
+       LID
+    --------------------------------------------- */
 
     giftLid.position.y +=
         1.2;
@@ -1041,6 +1229,10 @@ function interactWithGift(
         -0.35;
 
 
+    /* ---------------------------------------------
+       RIBBON
+    --------------------------------------------- */
+
     ribbonTop.position.y +=
         1.2;
 
@@ -1049,9 +1241,9 @@ function interactWithGift(
         -0.35;
 
 
-    /* =================================================
+    /* ---------------------------------------------
        HEART
-    ================================================= */
+    --------------------------------------------- */
 
     heart.visible = true;
 
@@ -1063,9 +1255,9 @@ function interactWithGift(
     );
 
 
-    /* =================================================
+    /* ---------------------------------------------
        LIGHT
-    ================================================= */
+    --------------------------------------------- */
 
     const giftLight =
         new THREE.PointLight(
@@ -1087,27 +1279,28 @@ function interactWithGift(
     );
 
 
-    let lightIntensity = 0;
+    let intensity = 0;
 
 
     const lightAnimation =
         setInterval(
             function () {
 
-                lightIntensity +=
+                intensity +=
                     0.35;
 
 
                 giftLight.intensity =
-                    lightIntensity;
+                    intensity;
 
 
                 heartLight.intensity =
-                    lightIntensity * 0.45;
+                    intensity *
+                    0.45;
 
 
                 if (
-                    lightIntensity >= 8
+                    intensity >= 8
                 ) {
 
                     giftLight.intensity =
@@ -1135,12 +1328,10 @@ function interactWithGift(
 
 window.addEventListener(
     "click",
-    function (event) {
 
-        interactWithGift(
-            event.clientX,
-            event.clientY
-        );
+    function () {
+
+        openGift();
     }
 );
 
@@ -1156,12 +1347,12 @@ let tapStartY = 0;
 
 window.addEventListener(
     "touchstart",
+
     function (event) {
 
         if (
             event.touches.length !== 1
         ) {
-
             return;
         }
 
@@ -1173,6 +1364,7 @@ window.addEventListener(
         tapStartY =
             event.touches[0].clientY;
     },
+
     {
         passive: true
     }
@@ -1181,12 +1373,12 @@ window.addEventListener(
 
 window.addEventListener(
     "touchend",
+
     function (event) {
 
         if (
             event.changedTouches.length !== 1
         ) {
-
             return;
         }
 
@@ -1202,11 +1394,14 @@ window.addEventListener(
         const distance =
             Math.sqrt(
                 Math.pow(
-                    endX - tapStartX,
+                    endX -
+                    tapStartX,
                     2
                 ) +
+
                 Math.pow(
-                    endY - tapStartY,
+                    endY -
+                    tapStartY,
                     2
                 )
             );
@@ -1215,15 +1410,14 @@ window.addEventListener(
         if (
             distance < 25 &&
             endX >
-            window.innerWidth * 0.35
+            window.innerWidth *
+            0.35
         ) {
 
-            interactWithGift(
-                endX,
-                endY
-            );
+            openGift();
         }
     },
+
     {
         passive: true
     }
@@ -1236,6 +1430,7 @@ window.addEventListener(
 
 window.addEventListener(
     "resize",
+
     function () {
 
         camera.aspect =
@@ -1310,9 +1505,9 @@ function animate() {
     );
 
 
-    /* =================================================
+    /* ---------------------------------------------
        GIFT ROTATION
-    ================================================= */
+    --------------------------------------------- */
 
     if (
         !giftOpened
@@ -1323,16 +1518,16 @@ function animate() {
     }
 
 
-    /* =================================================
+    /* ---------------------------------------------
        INTERACTION
-    ================================================= */
+    --------------------------------------------- */
 
     updateInteraction();
 
 
-    /* =================================================
+    /* ---------------------------------------------
        HEART
-    ================================================= */
+    --------------------------------------------- */
 
     if (
         heart.visible
@@ -1340,85 +1535,40 @@ function animate() {
 
         heart.position.y +=
             (
-                heartTargetY -
+                4.8 -
                 heart.position.y
             ) * 0.025;
 
 
         heart.position.x =
             Math.sin(
-                Date.now() * 0.002
+                Date.now() *
+                0.002
             ) * 0.08;
 
 
         heart.rotation.y +=
             0.01;
-
-
-        if (
-            !cinematicStarted &&
-            heart.position.y > 4.65
-        ) {
-
-            cinematicStarted = true;
-
-
-            const cinematicText =
-                document.getElementById(
-                    "cinematicText"
-                );
-
-
-            const cinematicLine2 =
-                document.getElementById(
-                    "cinematicLine2"
-                );
-
-
-            if (
-                cinematicText
-            ) {
-
-                cinematicText.style.opacity =
-                    "1";
-            }
-
-
-            setTimeout(
-                function () {
-
-                    if (
-                        cinematicLine2
-                    ) {
-
-                        cinematicLine2.style.opacity =
-                            "1";
-                    }
-
-                },
-                1800
-            );
-        }
     }
 
 
-    /* =================================================
+    /* ---------------------------------------------
        MOVEMENT
-    ================================================= */
+    --------------------------------------------- */
 
     updateMovement();
 
 
-    /* =================================================
+    /* ---------------------------------------------
        CAMERA
-    ================================================= */
+    --------------------------------------------- */
 
     updateCamera();
 
 
-    /* =================================================
+    /* ---------------------------------------------
        RENDER
-    ================================================= */
+    --------------------------------------------- */
 
     renderer.render(
         scene,
