@@ -676,10 +676,25 @@ function resetJoystick() {
 const moveSpeed = 0.035;
 
 
+/* =====================================================
+   COLLISION SETTINGS
+===================================================== */
+
+const playerRadius = 0.35;
+
+
+/* =====================================================
+   MOVEMENT + COLLISION
+===================================================== */
+
 function updateMovement() {
 
+    /* ---------------------------------------------
+       JOYSTICK
+    --------------------------------------------- */
+
     const forward =
-        -joystickY *
+        joystickY *
         moveSpeed;
 
 
@@ -688,28 +703,47 @@ function updateMovement() {
         moveSpeed;
 
 
-    camera.position.x +=
+    /* ---------------------------------------------
+       CURRENT POSITION
+    --------------------------------------------- */
+
+    let nextX =
+        camera.position.x;
+
+    let nextZ =
+        camera.position.z;
+
+
+    /* ---------------------------------------------
+       FORWARD / BACKWARD
+    --------------------------------------------- */
+
+    nextX +=
         Math.sin(
             camera.rotation.y
         ) *
         forward;
 
 
-    camera.position.z +=
+    nextZ +=
         Math.cos(
             camera.rotation.y
         ) *
         forward;
 
 
-    camera.position.x +=
+    /* ---------------------------------------------
+       LEFT / RIGHT
+    --------------------------------------------- */
+
+    nextX +=
         Math.cos(
             camera.rotation.y
         ) *
         right;
 
 
-    camera.position.z -=
+    nextZ -=
         Math.sin(
             camera.rotation.y
         ) *
@@ -717,22 +751,22 @@ function updateMovement() {
 
 
     /* =================================================
-       ROOM LIMITS
+       ROOM WALL COLLISION
     ================================================= */
 
-    camera.position.x =
+    nextX =
         THREE.MathUtils.clamp(
-            camera.position.x,
-            -5.8,
-            5.8
+            nextX,
+            -6.65 + playerRadius,
+            6.65 - playerRadius
         );
 
 
-    camera.position.z =
+    nextZ =
         THREE.MathUtils.clamp(
-            camera.position.z,
-            -4.2,
-            5.5
+            nextZ,
+            -4.65 + playerRadius,
+            6.65 - playerRadius
         );
 
 
@@ -740,81 +774,115 @@ function updateMovement() {
        TABLE COLLISION
     ================================================= */
 
-    const tableMinX = -2.45;
-    const tableMaxX = 2.45;
+    const tableMinX =
+        -2.25 - playerRadius;
 
-    const tableMinZ = -2.25;
-    const tableMaxZ = 0.25;
+    const tableMaxX =
+        2.25 + playerRadius;
 
+    const tableMinZ =
+        -2.10 - playerRadius;
+
+    const tableMaxZ =
+        0.10 + playerRadius;
+
+
+    const insideTableX =
+        nextX > tableMinX &&
+        nextX < tableMaxX;
+
+
+    const insideTableZ =
+        nextZ > tableMinZ &&
+        nextZ < tableMaxZ;
+
+
+    /* ---------------------------------------------
+       BLOCK ENTERING TABLE
+    --------------------------------------------- */
 
     if (
-        camera.position.x > tableMinX &&
-        camera.position.x < tableMaxX &&
-        camera.position.z > tableMinZ &&
-        camera.position.z < tableMaxZ
+        insideTableX &&
+        insideTableZ
     ) {
 
-        const left =
+        const distanceLeft =
             Math.abs(
-                camera.position.x -
-                tableMinX
+                nextX - tableMinX
             );
 
 
-        const right =
+        const distanceRight =
             Math.abs(
-                camera.position.x -
-                tableMaxX
+                nextX - tableMaxX
             );
 
 
-        const front =
+        const distanceFront =
             Math.abs(
-                camera.position.z -
-                tableMaxZ
+                nextZ - tableMaxZ
             );
 
 
-        const back =
+        const distanceBack =
             Math.abs(
-                camera.position.z -
-                tableMinZ
+                nextZ - tableMinZ
             );
 
 
         const smallest =
             Math.min(
-                left,
-                right,
-                front,
-                back
+                distanceLeft,
+                distanceRight,
+                distanceFront,
+                distanceBack
             );
 
 
-        if (smallest === left) {
+        if (
+            smallest ===
+            distanceLeft
+        ) {
 
-            camera.position.x =
+            nextX =
                 tableMinX;
 
         }
-        else if (smallest === right) {
+        else if (
+            smallest ===
+            distanceRight
+        ) {
 
-            camera.position.x =
+            nextX =
                 tableMaxX;
 
         }
-        else if (smallest === front) {
+        else if (
+            smallest ===
+            distanceFront
+        ) {
 
-            camera.position.z =
+            nextZ =
                 tableMaxZ;
 
         }
         else {
 
-            camera.position.z =
+            nextZ =
                 tableMinZ;
         }
     }
+
+
+    /* =================================================
+       APPLY POSITION
+    ================================================= */
+
+    camera.position.x =
+        nextX;
+
+    camera.position.z =
+        nextZ;
 }
 
 
@@ -840,7 +908,7 @@ function updateCamera() {
 
 
 /* =====================================================
-   GIFT
+   GIFT INTERACTION
 ===================================================== */
 
 const raycaster =
@@ -899,17 +967,27 @@ function interactWithGift(
     giftOpened = true;
 
 
-    giftLid.position.y += 1.2;
+    /* =================================================
+       OPEN LID
+    ================================================= */
+
+    giftLid.position.y +=
+        1.2;
 
     giftLid.rotation.x =
         -0.35;
 
 
-    ribbonTop.position.y += 1.2;
+    ribbonTop.position.y +=
+        1.2;
 
     ribbonTop.rotation.x =
         -0.35;
 
+
+    /* =================================================
+       SHOW HEART
+    ================================================= */
 
     heart.visible = true;
 
@@ -919,6 +997,10 @@ function interactWithGift(
         -1
     );
 
+
+    /* =================================================
+       GIFT LIGHT
+    ================================================= */
 
     const giftLight =
         new THREE.PointLight(
@@ -943,10 +1025,13 @@ function interactWithGift(
         setInterval(
             function () {
 
-                lightIntensity += 0.35;
+                lightIntensity +=
+                    0.35;
+
 
                 giftLight.intensity =
                     lightIntensity;
+
 
                 heartLight.intensity =
                     lightIntensity * 0.45;
@@ -956,9 +1041,12 @@ function interactWithGift(
                     lightIntensity >= 8
                 ) {
 
-                    giftLight.intensity = 8;
+                    giftLight.intensity =
+                        8;
 
-                    heartLight.intensity = 4;
+                    heartLight.intensity =
+                        4;
+
 
                     clearInterval(
                         lightAnimation
@@ -1002,6 +1090,7 @@ window.addEventListener(
         if (event.touches.length !== 1) {
             return;
         }
+
 
         tapStartX =
             event.touches[0].clientX;
@@ -1148,7 +1237,8 @@ function animate() {
 
     if (!giftOpened) {
 
-        gift.rotation.y += 0.002;
+        gift.rotation.y +=
+            0.002;
     }
 
 
@@ -1171,7 +1261,8 @@ function animate() {
             ) * 0.08;
 
 
-        heart.rotation.y += 0.01;
+        heart.rotation.y +=
+            0.01;
 
 
         if (
