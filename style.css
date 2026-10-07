@@ -1,262 +1,204 @@
 * {
     box-sizing: border-box;
-    margin: 0;
-    padding: 0;
 }
+
 
 html,
 body {
+    margin: 0;
+
+    padding: 0;
+
     width: 100%;
     height: 100%;
+
     overflow: hidden;
 
     background: #020204;
 }
 
+
 body {
-    font-family: Tahoma, Arial, sans-serif;
+    font-family:
+        Arial,
+        sans-serif;
+
+    touch-action: none;
 }
+
+
+/* =====================================================
+   SCENE
+===================================================== */
 
 #scene {
     position: fixed;
 
-    inset: 0;
+    left: 0;
+    top: 0;
 
     width: 100%;
     height: 100%;
 
     display: block;
+
+    z-index: 1;
 }
 
 
-/* =========================
+/* =====================================================
    LOADING
-========================= */
+===================================================== */
 
 .loading {
-    position: fixed;
-
-    inset: 0;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    color: #d8cbd0;
-
-    font-size: 16px;
-
-    background: #020204;
-
-    z-index: 10;
-
-    transition:
-        opacity 1s ease;
-}
-
-
-/* =========================
-   MESSAGE
-========================= */
-
-.message {
     position: fixed;
 
     left: 50%;
     top: 50%;
 
     transform:
-        translate(-50%, -50%);
+        translate(
+            -50%,
+            -50%
+        );
+
+    z-index: 50;
+
+    color: #ffe6ee;
+
+    font-size: 18px;
 
     text-align: center;
 
-    color: white;
+    transition:
+        opacity 1s ease;
+}
+
+
+/* =====================================================
+   CINEMATIC TEXT
+===================================================== */
+
+.cinematic-text {
+    position: fixed;
+
+    left: 50%;
+    top: 18%;
+
+    transform:
+        translateX(-50%);
+
+    width: 90%;
+
+    text-align: center;
+
+    z-index: 40;
+
+    color: #ffe6ee;
+
+    font-size: 24px;
+
+    text-shadow:
+        0 0 20px
+        rgba(
+            255,
+            80,
+            130,
+            0.6
+        );
+
+    opacity: 0;
 
     pointer-events: none;
+
+    transition:
+        opacity 1.5s ease;
+}
+
+
+#cinematicLine2 {
+    margin-top: 18px;
+
+    font-size: 17px;
 
     opacity: 0;
 
     transition:
-        opacity 2s ease;
-
-    z-index: 5;
-
-    text-shadow:
-        0 0 20px
-        rgba(255, 100, 150, 0.5);
+        opacity 1.5s ease;
 }
 
-.message-small {
-    color: #a99da3;
+
+/* =====================================================
+   INTERACTION TEXT
+===================================================== */
+
+#interactionText {
+    position: fixed;
+
+    left: 50%;
+
+    bottom: 180px;
+
+    transform:
+        translateX(-50%);
+
+    z-index: 100;
+
+    padding:
+        12px 22px;
+
+    border-radius: 30px;
+
+    background:
+        rgba(
+            15,
+            5,
+            10,
+            0.82
+        );
+
+    border:
+        1px solid
+        rgba(
+            255,
+            180,
+            205,
+            0.45
+        );
+
+    color: #ffe6ee;
 
     font-size: 16px;
 
-    margin-bottom: 15px;
-}
+    white-space: nowrap;
 
-.message h1 {
-    color: #ffd9e3;
-
-    font-size: 52px;
-
-    font-weight: 400;
-
-    margin-bottom: 20px;
-}
-
-.message p {
-    color: #d8cbd0;
-
-    font-size: 18px;
-}
-
-
-/* =========================
-   MOBILE
-========================= */
-
-@media (max-width: 600px) {
-
-    .message h1 {
-        font-size: 40px;
-    }
-
-    .message p {
-        font-size: 16px;
-    }
-}
-
-/* =========================
-   CINEMATIC TEXT
-========================= */
-
-.cinematic-text {
-    position: fixed;
-
-    left: 50%;
-    top: 72%;
-
-    transform: translate(-50%, -50%);
-
-    width: 90%;
-
-    text-align: center;
-
-    color: white;
+    box-shadow:
+        0 0 25px
+        rgba(
+            255,
+            70,
+            130,
+            0.25
+        );
 
     opacity: 0;
 
     pointer-events: none;
 
-    z-index: 20;
-
-    text-shadow:
-        0 0 20px rgba(255, 100, 150, 0.5);
-
     transition:
-        opacity 2s ease;
+        opacity 0.25s ease;
 }
 
-#cinematicLine1 {
-    color: #ffd9e3;
-
-    font-size: 42px;
-
-    margin-bottom: 18px;
-}
-
-#cinematicLine2 {
-    color: #d8cbd0;
-
-    font-size: 19px;
-
-    opacity: 0;
-
-    transition:
-        opacity 2s ease;
-}
-
-@media (max-width: 600px) {
-
-    #cinematicLine1 {
-        font-size: 34px;
-    }
-
-    #cinematicLine2 {
-        font-size: 16px;
-    }
-}
-
-.cinematic-text {
-    position: fixed;
-
-    left: 50%;
-    top: 72%;
-
-    transform:
-        translate(-50%, -50%);
-
-    width: 90%;
-
-    text-align: center;
-
-    color: white;
-
-    opacity: 0;
-
-    pointer-events: none;
-
-    z-index: 20;
-
-    text-shadow:
-        0 0 20px
-        rgba(255, 100, 150, 0.5);
-
-    transition:
-        opacity 2s ease;
-}
-
-
-#cinematicLine1 {
-    color: #ffd9e3;
-
-    font-size: 42px;
-
-    margin-bottom: 18px;
-}
-
-
-#cinematicLine2 {
-    color: #d8cbd0;
-
-    font-size: 19px;
-
-    opacity: 0;
-
-    transition:
-        opacity 2s ease;
-}
-
-
-@media (max-width: 600px) {
-
-    #cinematicLine1 {
-        font-size: 34px;
-    }
-
-    #cinematicLine2 {
-        font-size: 16px;
-    }
-}
 
 /* =====================================================
-   MOBILE JOYSTICK
+   JOYSTICK
 ===================================================== */
 
 .joystick-area {
     position: fixed;
 
     left: 25px;
+
     bottom: 25px;
 
     width: 130px;
@@ -267,7 +209,9 @@ body {
     touch-action: none;
 
     display: flex;
+
     align-items: center;
+
     justify-content: center;
 }
 
@@ -279,18 +223,35 @@ body {
     border-radius: 50%;
 
     background:
-        rgba(255, 255, 255, 0.08);
+        rgba(
+            255,
+            255,
+            255,
+            0.08
+        );
 
     border:
         2px solid
-        rgba(255, 210, 225, 0.25);
+        rgba(
+            255,
+            210,
+            225,
+            0.25
+        );
 
     box-shadow:
         0 0 25px
-        rgba(255, 80, 130, 0.12);
+        rgba(
+            255,
+            80,
+            130,
+            0.12
+        );
 
     display: flex;
+
     align-items: center;
+
     justify-content: center;
 }
 
@@ -302,18 +263,36 @@ body {
     border-radius: 50%;
 
     background:
-        rgba(255, 210, 225, 0.45);
+        rgba(
+            255,
+            210,
+            225,
+            0.45
+        );
 
     border:
         2px solid
-        rgba(255, 230, 240, 0.7);
+        rgba(
+            255,
+            230,
+            240,
+            0.7
+        );
 
     box-shadow:
         0 0 15px
-        rgba(255, 100, 150, 0.35);
+        rgba(
+            255,
+            100,
+            150,
+            0.35
+        );
 
     transform:
-        translate(0px, 0px);
+        translate(
+            0px,
+            0px
+        );
 
     transition:
         transform 0.05s linear;
@@ -324,56 +303,11 @@ body {
    MOBILE
 ===================================================== */
 
-@media (min-width: 700px) {
+@media (
+    min-width: 700px
+) {
 
     .joystick-area {
         display: none;
     }
-}
-
-/* =====================================================
-   INTERACTION TEXT
-===================================================== */
-
-#interactionText {
-    position: fixed;
-
-    left: 50%;
-    bottom: 32px;
-
-    transform: translateX(-50%);
-
-    z-index: 25;
-
-    padding: 12px 22px;
-
-    border-radius: 30px;
-
-    background:
-        rgba(15, 5, 10, 0.75);
-
-    border:
-        1px solid
-        rgba(255, 180, 205, 0.35);
-
-    color: #ffe6ee;
-
-    font-family:
-        Arial,
-        sans-serif;
-
-    font-size: 16px;
-
-    white-space: nowrap;
-
-    box-shadow:
-        0 0 25px
-        rgba(255, 70, 130, 0.2);
-
-    opacity: 0;
-
-    pointer-events: none;
-
-    transition:
-        opacity 0.25s ease;
 }
